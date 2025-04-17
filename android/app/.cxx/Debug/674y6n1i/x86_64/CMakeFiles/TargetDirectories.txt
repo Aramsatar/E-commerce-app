@@ -1,0 +1,2 @@
+/Users/aram/Movies/cwt_ecommerce_app-master/android/app/.cxx/Debug/674y6n1i/x86_64/CMakeFiles/edit_cache.dir
+/Users/aram/Movies/cwt_ecommerce_app-master/android/app/.cxx/Debug/674y6n1i/x86_64/CMakeFiles/rebuild_cache.dir
