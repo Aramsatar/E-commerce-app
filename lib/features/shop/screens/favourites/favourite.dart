@@ -20,25 +20,33 @@ class FavouriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize the controller
+    final controller = Get.put(FavouritesController());
+
     return PopScope(
       canPop: false,
       // Intercept the back button press and redirect to Home Screen
       onPopInvoked: (value) async => Get.offAll(const HomeMenu()),
       child: Scaffold(
         appBar: TAppBar(
-          title: Text('Wishlist', style: Theme.of(context).textTheme.headlineMedium),
-          actions: [TCircularIcon(icon: Iconsax.add, onPressed: () => Get.to(() => const StoreScreen()))],
+          title: Text('Wishlist',
+              style: Theme.of(context).textTheme.headlineMedium),
+          actions: [
+            TCircularIcon(
+                icon: Iconsax.add,
+                onPressed: () => Get.to(() => const StoreScreen()))
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(TSizes.defaultSpace),
             child: Column(
               children: [
-
                 /// Products Grid
                 Obx(() {
+                  // This will refresh when controller.favorites changes
                   return FutureBuilder(
-                    future: FavouritesController.instance.favoriteProducts(),
+                    future: controller.favoriteProducts(),
                     builder: (_, snapshot) {
                       /// Nothing Found Widget
                       final emptyWidget = TAnimationLoaderWidget(
@@ -49,18 +57,25 @@ class FavouriteScreen extends StatelessWidget {
                         onActionPressed: () => Get.off(() => const HomeMenu()),
                       );
                       const loader = TVerticalProductShimmer(itemCount: 6);
-                      final widget = TCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot, loader: loader, nothingFound: emptyWidget);
+                      final widget =
+                          TCloudHelperFunctions.checkMultiRecordState(
+                              snapshot: snapshot,
+                              loader: loader,
+                              nothingFound: emptyWidget);
                       if (widget != null) return widget;
 
                       final products = snapshot.data!;
                       return TGridLayout(
                         itemCount: products.length,
-                        itemBuilder: (_, index) => TProductCardVertical(product: products[index]),
+                        itemBuilder: (_, index) =>
+                            TProductCardVertical(product: products[index]),
                       );
                     },
                   );
                 }),
-                SizedBox(height: TDeviceUtils.getBottomNavigationBarHeight() + TSizes.defaultSpace),
+                SizedBox(
+                    height: TDeviceUtils.getBottomNavigationBarHeight() +
+                        TSizes.defaultSpace),
               ],
             ),
           ),
