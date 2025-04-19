@@ -8,6 +8,7 @@ import 'features/personalization/screens/setting/settings.dart';
 import 'features/shop/screens/favourites/favourite.dart';
 import 'features/shop/screens/home/home.dart';
 import 'features/shop/screens/store/store.dart';
+import 'features/shop/screens/wardrobe/wardrobe.dart';
 
 class HomeMenu extends StatelessWidget {
   const HomeMenu({super.key});
@@ -22,14 +23,21 @@ class HomeMenu extends StatelessWidget {
           height: 80,
           animationDuration: const Duration(seconds: 3),
           selectedIndex: controller.selectedMenu.value,
-          backgroundColor: THelperFunctions.isDarkMode(context) ? TColors.black : Colors.white,
+          backgroundColor: THelperFunctions.isDarkMode(context)
+              ? TColors.black
+              : Colors.white,
           elevation: 0,
-          indicatorColor: THelperFunctions.isDarkMode(context) ? TColors.white.withOpacity(0.1) : TColors.black.withOpacity(0.1),
-          onDestinationSelected: (index) => controller.selectedMenu.value = index,
+          indicatorColor: THelperFunctions.isDarkMode(context)
+              ? TColors.white.withOpacity(0.1)
+              : TColors.black.withOpacity(0.1),
+          onDestinationSelected: (index) =>
+              controller.selectedMenu.value = index,
           destinations: const [
             NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
             NavigationDestination(icon: Icon(Iconsax.shop), label: 'Store'),
             NavigationDestination(icon: Icon(Iconsax.heart), label: 'Wishlist'),
+            NavigationDestination(
+                icon: Icon(Iconsax.courthouse), label: 'Wardrobe'),
             NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
           ],
         ),
@@ -44,5 +52,11 @@ class AppScreenController extends GetxController {
 
   final Rx<int> selectedMenu = 0.obs;
 
-  final screens = [const HomeScreen(), const StoreScreen(), const FavouriteScreen(), const SettingsScreen()];
+  final screens = [
+    const HomeScreen(),
+    const StoreScreen(),
+    const FavouriteScreen(),
+    const WardrobeScreen(),
+    const SettingsScreen()
+  ];
 }

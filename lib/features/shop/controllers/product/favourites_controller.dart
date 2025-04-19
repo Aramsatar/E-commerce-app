@@ -21,10 +21,16 @@ class FavouritesController extends GetxController {
 
   // Method to initialize favorites by reading from storage
   Future<void> initFavorites() async {
-    final json = TLocalStorage.instance().readData('favorites');
-    if (json != null) {
-      final storedFavorites = jsonDecode(json) as Map<String, dynamic>;
-      favorites.assignAll(storedFavorites.map((key, value) => MapEntry(key, value as bool)));
+    try {
+      final json = TLocalStorage.instance().readData('favorites');
+      if (json != null) {
+        final storedFavorites = jsonDecode(json) as Map<String, dynamic>;
+        favorites.assignAll(
+            storedFavorites.map((key, value) => MapEntry(key, value as bool)));
+      }
+    } catch (e) {
+      print('Error initializing favorites: $e');
+      // If there's an error, just continue with empty favorites
     }
   }
 
@@ -45,18 +51,24 @@ class FavouritesController extends GetxController {
       favorites.remove(productId);
       saveFavoritesToStorage();
       favorites.refresh();
-      TLoaders.customToast(message: 'Product has been removed from the Wishlist.');
+      TLoaders.customToast(
+          message: 'Product has been removed from the Wishlist.');
     }
   }
 
   // Save the updated favorites to storage
   void saveFavoritesToStorage() {
-    final encodedFavorites = json.encode(favorites);
-    TLocalStorage.instance().writeData('favorites', encodedFavorites);
+    try {
+      final encodedFavorites = json.encode(favorites);
+      TLocalStorage.instance().writeData('favorites', encodedFavorites);
+    } catch (e) {
+      print('Error saving favorites: $e');
+    }
   }
 
   /// Method to get the list of favorite products
   Future<List<ProductModel>> favoriteProducts() {
-    return ProductRepository.instance.getFavouriteProducts(favorites.keys.toList());
+    return ProductRepository.instance
+        .getFavouriteProducts(favorites.keys.toList());
   }
 }

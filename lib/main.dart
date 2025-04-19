@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'app.dart';
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'firebase_options.dart';
+import 'utils/local_storage/storage_utility.dart';
 
 /// -- Entry point of Flutter App
 Future<void> main() async {
@@ -16,6 +17,9 @@ Future<void> main() async {
 
   /// -- GetX Local Storage
   await GetStorage.init();
+
+  /// -- Initialize TLocalStorage with a bucket name
+  await TLocalStorage.init('t_store_bucket');
 
   /// -- Overcome from transparent spaces at the bottom in iOS full Mode
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
